@@ -44,7 +44,10 @@ def resetpswsendVercode(mobilephone):
     return response[8:9]
 
 
-
+def expireregisterVercode(phone):
+    redis_command = 'redis-cli -a CRM_jzzq_Redis expire sms_verify_code_' + str(phone) + ' 0'
+    p = os.popen("ssh -o StrictHostKeyChecking=no root@10.10.13.39 " + redis_command)
+    return p.read()
 
 
 if __name__ == '__main__':

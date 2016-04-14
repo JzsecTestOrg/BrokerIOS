@@ -36,21 +36,29 @@ def vercodeText(self):
     
 
 
-def pswfirstText(self):
+def passwordText(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'pswfirstText', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'passwordText', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件pswfirstText未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件passwordText未找到\n" + traceback.format_exc())
     
 
 
-def pswsecondText(self):
+def cipherpasswordText(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'pswsecondText', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'cipherpasswordText', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件pswsecondText未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件cipherpasswordText未找到\n" + traceback.format_exc())
+
+
+def plainpasswordText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'plainpasswordText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件plainpasswordText未找到\n" + traceback.format_exc())
     
 
 
@@ -63,22 +71,14 @@ def nicknameText(self):
     
 
 
-def protocolCheckbox(self):
+def protocolCheckbox(self, i):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'protocolCheckbox', 1))))
+        el = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'protocolCheckbox', i))))
         return el
     except:
         globalData.LOG += generateLog.format_log("控件protocolCheckbox未找到\n" + traceback.format_exc())
-    
 
 
-def protocolChecked(self):
-    try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'protocolChecked', 1))))
-        return el
-    except:
-        globalData.LOG += generateLog.format_log("控件protocolChecked未找到\n" + traceback.format_exc())
-    
 
 
 def protocolLink(self):
@@ -118,7 +118,7 @@ def backButton(self):
 
 def registerButton(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, Data.getXpath('register', 'register', 'registerButton', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'registerButton', 1))))
         return el
     except:
         globalData.LOG += generateLog.format_log("控件registerButton未找到\n" + traceback.format_exc())
@@ -159,10 +159,10 @@ def pswfirstSecureText(self):
 
 def registerPage(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'pswfirstSecureText', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'registerPage', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件pswfirstSecureText未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件registerPage未找到\n" + traceback.format_exc())
 
 
 def loginButton(self):
@@ -172,5 +172,52 @@ def loginButton(self):
     except:
         globalData.LOG += generateLog.format_log("控件loginButton未找到\n" + traceback.format_exc())
 
+
+def protocolText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'protocolText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件protocolText未找到\n" + traceback.format_exc())
+
+
+def servicephoneText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'servicephoneText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件servicephoneText未找到\n" + traceback.format_exc())
+
+
+def popupText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'popupText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件popupText未找到\n" + traceback.format_exc())
+
+
+def continueregisterButton(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'continueregisterButton', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件continueregisterButton未找到\n" + traceback.format_exc())
+
+
+def cancelButton(self):
+    try:
+        el = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'cancelButton', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件cancelButton未找到\n" + traceback.format_exc())
+
+
+def confirmButton(self):
+    try:
+        el = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('register', 'register', 'confirmButton', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件confirmButton未找到\n" + traceback.format_exc())
 
 

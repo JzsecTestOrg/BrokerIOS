@@ -1,0 +1,29 @@
+2016-04-13 18:42:18: module-init 真机启动成功
+2016-04-13 18:42:22: module-welcome 取消版本更新
+2016-04-13 18:42:28: module-welcome 欢迎第1页显示正确
+2016-04-13 18:42:32: module-welcome 欢迎第2页显示正确
+2016-04-13 18:42:36: module-welcome 欢迎第3页显示正确
+2016-04-13 18:42:40: module-welcome 欢迎第4页显示正确
+2016-04-13 18:42:44: module-welcome 欢迎页面点击登录
+2016-04-13 18:42:44: module-register *******现在开始执行模块【register】的第【38】条用例*******
+2016-04-13 18:42:44: module-register 手机号 15210262168 已注册
+2016-04-13 18:42:48: module-register 登录页面正确显示
+2016-04-13 18:42:52: module-register 点击注册按钮
+2016-04-13 18:42:54: module-register 注册页面正确显示
+2016-04-13 18:43:05: module-register 输入手机号：15210262168
+2016-04-13 18:43:08: module-register 验证码发送中...
+2016-04-13 18:43:18: module-register 验证码发送成功！
+2016-04-13 18:43:24: module-register 输入验证码: 251957
+2016-04-13 18:43:30: module-register 输入密码：qaz123
+2016-04-13 18:43:30: module-register 不对密码明暗文进行校验
+2016-04-13 18:43:38: module-register 输入昵称: 1
+2016-04-13 18:43:53: module-register 机构邀请码预填正确：8130L
+2016-04-13 18:43:56: module-register 清除邀请码
+2016-04-13 18:44:02: module-register 输入个人邀请码：9dRjX
+2016-04-13 18:44:02: module-register 不对经纪宝注册协议勾选进行校验
+2016-04-13 18:44:02: module-register 不对经纪宝注册协议内容校验
+2016-04-13 18:44:02: module-register 不对注册页面的客服电话校验
+2016-04-13 18:44:06: module-register 点击注册按钮
+2016-04-13 18:44:10: module-register 弹框提示正确：您已参与其他活动，无法修改此邀请码
+2016-04-13 18:44:14: module-register 点击取消
+2016-04-13 18:44:17: module-register 注册页面点击登录按钮

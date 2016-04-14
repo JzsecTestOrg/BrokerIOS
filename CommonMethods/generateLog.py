@@ -5,7 +5,8 @@ import sys
 
 
 def generate_log():
-    file_name = globalData.PATH + '/TestResult/' + globalData.MODULE + '.txt'
+    time = relatedTime.reporttime()
+    file_name = globalData.PATH + '/TestResult/' + globalData.MODULE + '_' + time + '.txt'
     file = open(file_name, 'w')
     file.write(globalData.LOG)
     file.close

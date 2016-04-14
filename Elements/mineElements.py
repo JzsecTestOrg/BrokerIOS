@@ -1118,23 +1118,49 @@ def profileconfirmButton(self):
         globalData.LOG += generateLog.format_log("控件profileconfirmButton未找到\n" + traceback.format_exc())
 
 
+def invitecodeLink(self):
+    try:
+        el = WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('mine', 'mine', 'invitecodeLink', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件invitecodeLink未找到\n" + traceback.format_exc())
 
 
+def invitecodePage(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('mine', 'invitecode', 'invitecodePage', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件invitecodePage未找到\n" + traceback.format_exc())
 
 
+def invitecodeText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('mine', 'invitecode', 'invitecodeText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件invitecodeText未找到\n" + traceback.format_exc())
 
 
+def brokeractivityText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('mine', 'invitecode', 'brokeractivityText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件brokeractivityText未找到\n" + traceback.format_exc())
 
 
+def examactivityText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('mine', 'invitecode', 'examactivityText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件examactivityText未找到\n" + traceback.format_exc())
 
 
-
-
-
-    
-
-
-
-
-
-
+def invitecodevalueText(self, code):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, "//UIAStaticText[@name = '您当前填写的邀请码：" + code +"\']")))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件invitecodevalueText未找到\n" + traceback.format_exc())

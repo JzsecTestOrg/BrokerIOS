@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'xuwen'
 import dataBase
-from Elements.bappElements import welcomeElements
+from Elements import welcomeElements
 import generateLog, globalData, Data
 
 def isRegisterSuccess(phone):

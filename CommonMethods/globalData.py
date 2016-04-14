@@ -4,6 +4,7 @@ __author__ = 'xuwen'
 import os
 import Data
 import postRequest
+from pyexcel_xls import XLBook
 
 
 #Bapp测试环境
@@ -52,8 +53,23 @@ COOKIES = postRequest.postLogin()
 #个人简介审核接口
 INTRODUCTION = "workorder/procorder"
 
+#测试数据集
+file_path1 = PATH + '/TestData/BappTestData.xlsx'
+workbook1 = XLBook(file_path1)
+test_data1 = dict(workbook1.sheets())
+TESTDATA = test_data1
 
+#执行的模块
+EXECUTED = []
 
+#APP版本
+VERSION = 'V2.4.0'
+
+#截图对比区域
+BOX = (130, 900, 1150, 1500)
+
+#截图对比结果尺寸大小
+SIZE = (2484, 2208)
 
 
 

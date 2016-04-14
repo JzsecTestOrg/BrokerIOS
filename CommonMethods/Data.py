@@ -9,7 +9,7 @@ import globalData
 
 
 def TestData():
-    file_path = globalData.PATH + '/TestData/TestData.xlsx'
+    file_path = globalData.PATH + '/TestData/BappData.xlsx'
     workbook = XLBook(file_path)
     test_data = dict(workbook.sheets())
     return test_data
@@ -61,10 +61,15 @@ def getTestdata(tab, case, index):
     else:
         return worksheet[case][index]
 
-def getCasenumber(moudle):
-    worksheet = globalData.TESTDATA.get(moudle)
+def getCasenumber(module):
+    worksheet = globalData.TESTDATA.get(module)
     nrows = len(worksheet)
-    return nrows
+    return nrows - 1
+
+def setExecutionresult(module, i, result):
+    for j in range(0, len(globalData.EXECUTED)):
+        if(globalData.EXECUTED[j].keys()[0] == module):
+            globalData.EXECUTED[j].values()[0][i - 1] = result
 
 
 

@@ -12,6 +12,7 @@ LOADTIMEFORMAT = "%Y-%m-%d %H:%M:%S"
 DEFAULTFOLLOWFORMAT = "%Y-%m-%d %H:%M"
 KPITIMEFORMAT = "%Y%m"
 TRADETIMEFORMAT = "%Y%m%d"
+REPORTTIMEFORMAT = '%Y%m%d'
 
 
 def currenttime():
@@ -71,7 +72,9 @@ def tradetime():
     return tradetime1, tradetime2, tradetime3, tradetime4, recommandtime1, recommandtime2, recommandtime3, recommandtime4, month1, month2, month3, month4
 
 
-
+def reporttime():
+    now = time.strftime(REPORTTIMEFORMAT, time.localtime(time.time()))
+    return now
 
 
 
@@ -81,5 +84,5 @@ if __name__ == '__main__':
 #     print defaultfollowtime()
 #     print followtime()
 #     print tradetime()
-    print kpitime()[1][0:4]
+    print reporttime()
 

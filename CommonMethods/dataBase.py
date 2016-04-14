@@ -15,33 +15,13 @@ from sqlalchemy.dialects.mysql import \
 import sys
 import globalData, Data
 from pyexcel_xls import XLBook
-import string
 import random
 
 
 
-# def db_session():
-#     db_config = {
-#         'host': '10.10.13.39',
-#         'port':3306,
-#         'user': 'crm',
-#         'passwd': 'crm@2015',
-#         'db':'crm',
-#         'charset':'utf8'
-#         }
-#     engine = create_engine('mysql+pymysql://%s:%s@%s:%s/%s?charset=%s'%(db_config['user'],
-#                                                                         db_config['passwd'],
-#                                                                         db_config['host'],
-#                                                                         db_config['port'],
-#                                                                         db_config['db'],
-#                                                                         db_config['charset']), echo=True)
-#     DB_Session = sessionmaker(bind=engine)
-#     session = DB_Session()
-#     return session
-
 def db_session():
     db_config = {
-        'host': '10.10.87.38',
+        'host': '10.10.13.39',
         'port':3306,
         'user': 'crm',
         'passwd': 'crm@2015',
@@ -57,6 +37,25 @@ def db_session():
     DB_Session = sessionmaker(bind=engine)
     session = DB_Session()
     return session
+
+# def db_session():
+#     db_config = {
+#         'host': '10.10.87.38',
+#         'port':3306,
+#         'user': 'crm',
+#         'passwd': 'crm@2015',
+#         'db':'crm',
+#         'charset':'utf8'
+#         }
+#     engine = create_engine('mysql+pymysql://%s:%s@%s:%s/%s?charset=%s'%(db_config['user'],
+#                                                                         db_config['passwd'],
+#                                                                         db_config['host'],
+#                                                                         db_config['port'],
+#                                                                         db_config['db'],
+#                                                                         db_config['charset']), echo=True)
+#     DB_Session = sessionmaker(bind=engine)
+#     session = DB_Session()
+#     return session
 
 
 def db_operate_log(phone):
@@ -444,7 +443,7 @@ def exam_status(phone):
 #获取经纪人信息
 def broker_info(phone):
     session = db_session()
-    result = session.execute("select * FROM b_user WHERE mobilephone = " + str(phone)).fetchall()
+    result = session.execute("select * FROM b_user WHERE mobilephone = \'" + str(phone) + "\'").fetchall()
     session.close()
     return result
 
@@ -1624,7 +1623,7 @@ def get_work_order(phone):
     return id
 
 #添加Capp用户
-def add_user():
+def add_cuser():
     file_path = globalData.PATH + '/TestData/CappData.xlsx'
     workbook = XLBook(file_path)
     test_data = dict(workbook.sheets())
@@ -1659,27 +1658,117 @@ def add_user():
         session.commit()
     session.close()
 
-#构造推荐链
+
+#添加Capp用户
+def insert_cuser(phone):
+    session = db_session()
+    session.execute("delete from c_user where loginmobile = \'" + str(phone) + "\'")
+    session.commit()
+    session.execute("INSERT INTO c_user VALUES (NULL, '6b4f9f85012b304979c94" + str(phone) + "\', '2015-09-10 10:59:23', '34f85ca80ec353d3052b8a2d3973a0c5', '0', \'" + str(phone) + "\', '', '', '1', '1977-07-17', '', '', '投资大师" + str(phone) + "\', '401', '2015-09-14 10:45:38', '1', '0', '0', '1012', '河北省张家口市万全县孔家庄镇工业街南万兴小区0号楼1单元202室', '2015-09-14 10:45:38', '2015-10-29 17:20:32', '', '1', '', '1', '', '', '', '')")
+    session.commit()
+    cuser = session.execute("select * from c_user where loginmobile = " + str(phone)).first()
+    if(cuser != None):
+        session.execute("update c_user set client_id = 'imaster_" + str(cuser.id) + "\' where loginmobile = \'" + str(phone) + "\'")
+        session.commit()
+    session.execute("delete from sd_customer where fund_account = \'" + str(phone) + "\'")
+    session.commit()
+    session.execute("INSERT INTO sd_customer VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0811', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, \'" + str(phone) + "\', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, \'" + str(phone) + "\', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL)")
+    session.commit()
+    cuser_id = session.execute("select * from c_user where loginmobile = \'" + str(phone) + "\'").first().id
+    session.execute("delete from trade_fund_account where c_user_id = \'" + str(cuser_id) + "\' or cust_id = \'" + str(phone) + "\'")
+    session.commit()
+    session.execute("INSERT INTO trade_fund_account VALUES (NULL, \'" + str(cuser_id) + "\', \'" + str(phone) + "\', \'" + str(phone) + "\', '0.00015000', '0.00000', '投资大师" + str(phone) + "\', '', '2008-10-13', '2018-10-13', 'c', '43062419900818361X', '00', '156', '长沙市开福区四方坪红色渔业队1号', '401', '101963', 'visitsurvey', '0', '2015-08-21 18:18:36', '2015-09-21 07:01:04')")
+    session.commit()
+    session.close()
+
+#构造推荐链:1-个人，2-考场，3-机构，4-Capp
 def invite_code(recommandphone, recommandedphone, relation):
     session = db_session()
-    if(relation == '1'):
+    if(relation == 1):
         insert_buser(recommandphone)
-        result = session.execute("select * from b_user WHERE mobilephone = " + str(recommandphone)).first()
+        result = session.execute("select * from b_user WHERE mobilephone = \'" + str(recommandphone) + "\'").first()
         bid = result.bid
         nickname = result.nickname
         invite_code = random_code(5)
         session.execute("DELETE FROM sys_share_link WHERE user_code = \'" + str(bid) + "\'")
         session.commit()
-        session.execute("INSERT INTO sys_share_link VALUES (NULL, 'http://w.url.cn/s/abcdefg', \'" + nickname + "\', \'" + str(bid) + "\', \'" + str(recommandedphone) + "\', '1', 'e717196e2218cd1f23e118d744a7bc21', \'" + invite_code + "\', '0', '0', '0', '0', '0', '0', '1', '2016-03-16 15:14:00', '2016-03-23 19:42:43', '0')")
+        session.execute("INSERT INTO sys_share_link VALUES (NULL, 'http://w.url.cn/s/abcdefg', \'" + nickname + "\', \'" + str(bid) + "\', \'" + str(recommandphone) + "\', '1', 'e717196e2218cd1f23e118d744a7bc21', \'" + invite_code + "\', '0', '0', '0', '0', '0', '0', '1', '2016-03-16 15:14:00', '2016-03-23 19:42:43', '0')")
         session.commit()
-        link_id = session.execute("SELECT * from sys_share_link WHERE user_code = \'" + str(bid) + "\' and 'product_type_id' = '1'").first().link_id
-        session.execute()
-        session.execute("INSERT INTO sys_share_relation (NULL, \'" + str(bid) + "\', \'" + str(link_id) + "\', '1', \'" + str(recommandedphone) + "\', '0', '100', '2016-03-16 15:15:11', '2016-03-23 18:01:05', '0', '0')")
+        link_id = session.execute("SELECT * from sys_share_link WHERE user_code = \'" + str(bid) + "\' and product_type_id = '1'").first().link_id
+        session.execute("DELETE FROM sys_share_relation WHERE mobilephone = \'" + str(recommandedphone) + "\' AND product_type_id = '1' AND bid = \'" + str(bid) + "\'")
         session.commit()
-    elif(relation == '2'):
-        insert_orgnization()
+        session.execute("INSERT INTO sys_share_relation VALUES (NULL, \'" + str(bid) + "\', \'" + str(link_id) + "\', '1', \'" + str(recommandedphone) + "\', '1000', '100', '2016-03-16 15:15:11', '2016-03-23 18:01:05', '0', '0')")
+        session.commit()
+        session.execute("DELETE FROM b_user WHERE mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+        session.execute("INSERT INTO b_user VALUES (NULL, '6b4f9f85012b304979c94" + str(recommandedphone) + "\', '推荐', '1', '汉', '0000-00-00 00:00:00', '2011-02-18 00:00:00', '2031-02-18 00:00:00', '阳江市公安局', '310108197801134859', '上海市杨浦区政立路1585弄36号302室', '', '', '', 'd439b49d158c3424a623c3cc22a4f3c0', '', \'" + str(recommandedphone) + "\', '0.0015', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', '0', '2010', '', '1', '4', '2015-09-10 17:54:52', '2015-09-18 14:57:37', '', '123456', '123456', '123456', '0', '', '0', '861770969@qq.com', '上海市杨浦区政立路1585弄36号302室', 'd6a0078df5f56793f0fbb5babcc631f5', 'd6a0078df5f56793f0fbb5babcc631f5', '0', '0', '0', '', '1', '0', '2', '1', '2', '-1', '0', '推荐', '', '0', NULL, '', '0', '0', '1', '1')")
+        session.commit()
+        session.execute("update b_user set client_id = 'kingbroker_6b4f9f85012b304979c94" + str(recommandedphone) + "\' where mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+    elif(relation == 2):
+        insert_orgnization(recommandphone, 1)
+        result = session.execute("SELECT * from o_user WHERE c_mobilephone = \'" + str(recommandphone) + "\'").first()
+        bid = result.oid
+        nickname = result.oname
+        invite_code = random_code(5)
+        session.execute("DELETE FROM sys_share_link WHERE user_code = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_link VALUES (NULL, 'http://w.url.cn/s/abcdefg', \'" + nickname + "\', \'" + str(bid) + "\', \'" + str(recommandphone) + "\', '1', 'e717196e2218cd1f23e118d744a7bc21', \'" + invite_code + "\', '0', '0', '0', '0', '0', '0', '1', '2016-03-16 15:14:00', '2016-03-23 19:42:43', '20')")
+        session.commit()
+        link_id = session.execute("SELECT * from sys_share_link WHERE user_code = \'" + str(bid) + "\' and product_type_id = '1'").first().link_id
+        session.execute("DELETE FROM sys_share_relation WHERE mobilephone = \'" + str(recommandedphone) + "\' AND product_type_id = '1' AND bid = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_relation VALUES (NULL, \'" + str(bid) + "\', \'" + str(link_id) + "\', '1', \'" + str(recommandedphone) + "\', '1000', '100', '2016-03-16 15:15:11', '2016-03-23 18:01:05', '20', '0')")
+        session.commit()
+        session.execute("DELETE FROM b_user WHERE mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+        session.execute("INSERT INTO b_user VALUES (NULL, '6b4f9f85012b304979c94" + str(recommandedphone) + "\', '推荐', '1', '汉', '0000-00-00 00:00:00', '2011-02-18 00:00:00', '2031-02-18 00:00:00', '阳江市公安局', '310108197801134859', '上海市杨浦区政立路1585弄36号302室', '', '', '', 'd439b49d158c3424a623c3cc22a4f3c0', '', \'" + str(recommandedphone) + "\', '0.0015', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', '0', '2010', '', '1', '4', '2015-09-10 17:54:52', '2015-09-18 14:57:37', '', '123456', '123456', '123456', '0', '', '0', '861770969@qq.com', '上海市杨浦区政立路1585弄36号302室', 'd6a0078df5f56793f0fbb5babcc631f5', 'd6a0078df5f56793f0fbb5babcc631f5', '0', '0', '0', '', '1', '0', '2', '1', '2', '-1', '0', '推荐', '', '0', NULL, '', '0', '0', '1', '1')")
+        session.commit()
+        session.execute("update b_user set client_id = 'kingbroker_6b4f9f85012b304979c94" + str(recommandedphone) + "\' where mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+    elif(relation == 3):
+        insert_orgnization(recommandphone, 2)
+        result = session.execute("SELECT * from o_user WHERE c_mobilephone = \'" + str(recommandphone) + "\'").first()
+        bid = result.oid
+        nickname = result.oname
+        invite_code = random_code(5)
+        session.execute("DELETE FROM sys_share_link WHERE user_code = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_link VALUES (NULL, 'http://w.url.cn/s/abcdefg', \'" + nickname + "\', \'" + str(bid) + "\', \'" + str(recommandphone) + "\', '1', 'e717196e2218cd1f23e118d744a7bc21', \'" + invite_code + "\', '0', '0', '0', '0', '0', '0', '1', '2016-03-16 15:14:00', '2016-03-23 19:42:43', '10')")
+        session.commit()
+        link_id = session.execute("SELECT * from sys_share_link WHERE user_code = \'" + str(bid) + "\' and product_type_id = '1'").first().link_id
+        session.execute("DELETE FROM sys_share_relation WHERE mobilephone = \'" + str(recommandedphone) + "\' AND product_type_id = '1' AND bid = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_relation VALUES (NULL, \'" + str(bid) + "\', \'" + str(link_id) + "\', '1', \'" + str(recommandedphone) + "\', '1000', '100', '2016-03-16 15:15:11', '2016-03-23 18:01:05', '10', '0')")
+        session.commit()
+        session.execute("DELETE FROM b_user WHERE mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+        session.execute("INSERT INTO b_user VALUES (NULL, '6b4f9f85012b304979c94" + str(recommandedphone) + "\', '推荐', '1', '汉', '0000-00-00 00:00:00', '2011-02-18 00:00:00', '2031-02-18 00:00:00', '阳江市公安局', '310108197801134859', '上海市杨浦区政立路1585弄36号302室', '', '', '', 'd439b49d158c3424a623c3cc22a4f3c0', '', \'" + str(recommandedphone) + "\', '0.0015', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz', '0', '2010', '', '1', '4', '2015-09-10 17:54:52', '2015-09-18 14:57:37', '', '123456', '123456', '123456', '0', '', '0', '861770969@qq.com', '上海市杨浦区政立路1585弄36号302室', 'd6a0078df5f56793f0fbb5babcc631f5', 'd6a0078df5f56793f0fbb5babcc631f5', '0', '0', '0', '', '1', '0', '2', '1', '2', '-1', '0', '推荐', '', '0', NULL, '', '0', '0', '1', '1')")
+        session.commit()
+        session.execute("update b_user set client_id = 'kingbroker_6b4f9f85012b304979c94" + str(recommandedphone) + "\' where mobilephone = \'" + str(recommandedphone) + "\'")
+        session.commit()
+    elif(relation == 4):
+        insert_buser(recommandphone)
+        result = session.execute("SELECT * FROM b_user WHERE mobilephone = \'" + str(recommandphone) + "\'").first()
+        bid = result.bid
+        nickname = result.nickname
+        invite_code = random_code(5)
+        session.execute("DELETE FROM sys_share_link WHERE user_code = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_link VALUES (NULL, 'http://w.url.cn/s/abcdefg', \'" + nickname + "\', \'" + str(bid) + "\', \'" + str(recommandphone) + "\', '2', 'e717196e2218cd1f23e118d744a7bc21', \'" + invite_code + "\', '0', '0', '0', '0', '0', '0', '1', '2016-03-16 15:14:00', '2016-03-23 19:42:43', '0')")
+        session.commit()
+        link_id = session.execute("SELECT * from sys_share_link WHERE user_code = \'" + str(bid) + "\' and product_type_id = '2'").first().link_id
+        session.execute("DELETE FROM sys_share_relation WHERE mobilephone = \'" + str(recommandedphone) + "\'  AND product_type_id = '2' AND bid = \'" + str(bid) + "\'")
+        session.commit()
+        session.execute("INSERT INTO sys_share_relation VALUES (NULL, \'" + str(bid) + "\', \'" + str(link_id) + "\', '2', \'" + str(recommandedphone) + "\', '1000', '100', '2016-03-16 15:15:11', '2016-03-23 18:01:05', '0', '0')")
+        session.commit()
+    session.close()
+    return invite_code
 
-#构造考场机构/合作机构
+
+
+
+#构造考场机构/合作机构:1-考场机构，2-合作机构
 def insert_orgnization(phone, type):
     session = db_session()
     if(type == 1):
@@ -1726,7 +1815,7 @@ if __name__ == '__main__':
     # insert_buser(15210262172)
     # insert_buser(15210262173)
     #删除Bapp经纪人
-    # del_buser(15210262168)
+    del_buser(15210262168)
     #修改培训时间
     # train_time_start(15313717521)
     # train_time_end(15313717521)
@@ -1737,7 +1826,7 @@ if __name__ == '__main__':
     # trade_commission(15210262170, 2)
     # trade_commission(15210262171, 3)
     # trade_commission(15210262172, 4)
-    # trade_commission(15210262173, 4)
+    # trade_commission(15210262173, 5)
     #构造推荐列表
     # share_relation(18001284533)
     #获取KPI信息
@@ -1826,4 +1915,4 @@ if __name__ == '__main__':
     # print get_contract_time(15210262168)
     # print cash_count(15210262168)
     # share_relation_status(18611358845)
-    print random_code(5)
+    print invite_code(12300000000, 15210262166, 1)
