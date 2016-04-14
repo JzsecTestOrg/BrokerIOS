@@ -13,8 +13,8 @@ class Register(unittest.TestCase):
             driverInit.deviceSetup(self)
 
 
-        def tearDown(self):
-            driverQuit.driverQuit(self)
+        # def tearDown(self):
+        #     driverQuit.driverQuit(self)
 
 
         def test_register(self):
@@ -22,16 +22,16 @@ class Register(unittest.TestCase):
             globalData.MODULE = 'welcome'
             welcome.welcome(self, 'login')
             globalData.MODULE = 'register'
-            try:
-                for i in range(38, Data.getCasenumber('register') + 1):
-                    globalData.LOG += generateLog.format_log('*******现在开始执行模块【register】的第【' + str(i) + '】条用例*******')
-                    register.register(self, i)
-                generateLog.generate_log()
-                globalData.LOG = ''
-            except:
-                globalData.LOG += generateLog.format_log(traceback.format_exc())
-                generateLog.generate_log()
-                globalData.LOG = ''
+            # try:
+            #     for i in range(38, Data.getCasenumber('register') + 1):
+            #         globalData.LOG += generateLog.format_log('*******现在开始执行模块【register】的第【' + str(i) + '】条用例*******')
+            #         register.register(self, i)
+            #     generateLog.generate_log()
+            #     globalData.LOG = ''
+            # except:
+            #     globalData.LOG += generateLog.format_log(traceback.format_exc())
+            #     generateLog.generate_log()
+            #     globalData.LOG = ''
 
 
 
@@ -62,9 +62,9 @@ if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     #注册
     try:
-        # runner.run(suite())
-        screenShot.compareScreenshot()
-        screenShot.mark_result()
+        runner.run(suite())
+        # screenShot.compareScreenshot()
+        # screenShot.mark_result()
         generateReport.generate_report()
     except:
         generateReport.generate_report()
