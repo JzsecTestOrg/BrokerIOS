@@ -26,20 +26,20 @@ def usernameText(self):
     
 
 
-def passwordSecureText(self):
+def cipherpasswordText(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'passwordSecureText', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'cipherpasswordText', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件passwordSecureText未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件cipherpasswordText未找到\n" + traceback.format_exc())
     
 
-def passwordText(self):
+def plainpasswordText(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'passwordText', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'plainpasswordText', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件passwordText未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件plainpasswordText未找到\n" + traceback.format_exc())
 
 
 def eyecloseButton(self):
@@ -56,25 +56,6 @@ def eyeopenButton(self):
         return el
     except:
         globalData.LOG += generateLog.format_log("控件eyeopenButton未找到\n" + traceback.format_exc())
-    
-
-
-def cantseeButton(self):
-    try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'cantseeButton', 1))))
-        return el
-    except:
-        globalData.LOG += generateLog.format_log("控件cantseeButton未找到\n" + traceback.format_exc())
-    
-
-
-def canseeButton(self):
-    try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'canseeButton', 1))))
-        return el
-    except:
-        globalData.LOG += generateLog.format_log("控件canseeButton未找到\n" + traceback.format_exc())
-    
 
 
 def forgetpawLink(self):
@@ -93,27 +74,39 @@ def loginButton(self):
         globalData.LOG += generateLog.format_log("控件loginButton未找到\n" + traceback.format_exc())
     
 
-def gothroughButton(self):
-    try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'gothroughButton', 1))))
-        return el
-    except:
-        globalData.LOG += generateLog.format_log("控件gothroughButton未找到\n" + traceback.format_exc())
-    
-
-def congratuationPage(self):
-    try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'congratuationPage', 1))))
-        return el
-    except:
-        globalData.LOG += generateLog.format_log("控件congratuationPage未找到\n" + traceback.format_exc())
-
 def registerButton(self):
     try:
         el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'registerButton', 1))))
         return el
     except:
         globalData.LOG += generateLog.format_log("控件registerButton未找到\n" + traceback.format_exc())
+
+def servicephoneText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'servicephoneText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件servicephoneText未找到\n" + traceback.format_exc())
+def popupText(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'popupText', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件popupText未找到\n" + traceback.format_exc())
+
+def confirmButton(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'confirmButton', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件confirmButton未找到\n" + traceback.format_exc())
+
+def backButton(self):
+    try:
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'backButton', 1))))
+        return el
+    except:
+        globalData.LOG += generateLog.format_log("控件backButton未找到\n" + traceback.format_exc())
     
 
 

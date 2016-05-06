@@ -1237,9 +1237,9 @@ def insert_buser(phone):
     session.commit()
     session.execute("INSERT INTO b_user_contract VALUES (NULL, '00000000000000000000000000000000', '6b4f9f85012b304979c94" + str(phone) + "\', NULL, NULL, '2000-01-01 00:00:00', '2020-10-13 00:00:00', '4', NULL, NULL, NULL, '2000-01-01 16:33:36', NULL, NULL, '0000-00-00 00:00:00', NULL, '0', '0', '1', '2015-10-15 16:33:36', '2015-10-15 16:33:36')")
     session.commit()
-    session.execute("INSERT INTO sys_user_role VALUES (NULL, '2', '6b4f9f85012b304979c94" + str(phone) + "\', '21', '1', '2016-01-20 14:39:24', '2016-01-20 14:39:24')")
+    session.execute("INSERT INTO sys_user_role VALUES (NULL, '2', '6b4f9f85012b304979c94" + str(phone) + "\', '21', '1', '0', '2016-01-20 14:39:24', '2016-01-20 14:39:24')")
     session.commit()
-    session.execute("INSERT INTO b_user VALUES (NULL, '6b4f9f85012b304979c94" + str(phone) + "\', '推荐', '1', '汉', '0000-00-00 00:00:00', '2011-02-18 00:00:00', '2031-02-18 00:00:00', '阳江市公安局', '310108197801134859', '上海市杨浦区政立路1585弄36号302室', '', '', '', 'd439b49d158c3424a623c3cc22a4f3c0', '', \'" + str(phone) + "\', '0.0015', 'e10adc3949ba59abbe56e057f20f883e', '0', '2010', '', '4', '4', '2015-09-10 17:54:52', '2015-09-18 14:57:37', '', '123456', '123456', '123456', '0', '', '0', '861770969@qq.com', '上海市杨浦区政立路1585弄36号302室', 'd6a0078df5f56793f0fbb5babcc631f5', 'd6a0078df5f56793f0fbb5babcc631f5', '0', '0', '0', '', '1', '2', '2', '1', '2', '-1', '0', '推荐', '', '0', NULL, '', '0', '0', '1', '1')")
+    session.execute("INSERT INTO b_user VALUES (NULL, '6b4f9f85012b304979c94" + str(phone) + "\', '推荐', '1', '1', '汉', '0000-00-00 00:00:00', '2011-02-18 00:00:00', '2031-02-18 00:00:00', '阳江市公安局', '310108197801134859', '上海市杨浦区政立路1585弄36号302室', '', '', '', 'd439b49d158c3424a623c3cc22a4f3c0', '', \'" + str(phone) + "\', '0.0015', '34f85ca80ec353d3052b8a2d3973a0c5', '0', '2010', '', '4', '4', '2015-09-10 17:54:52', '2015-09-18 14:57:37', '', '123456', '123456', '123456', '0', '', '0', '861770969@qq.com', '上海市杨浦区政立路1585弄36号302室', 'd6a0078df5f56793f0fbb5babcc631f5', 'd6a0078df5f56793f0fbb5babcc631f5', '0', '0', '0', '', '1', '2', '2', '1', '2', '1', '0', '推荐', '', '0', NULL, '', '0', '0', '1', '1', '08310001', '2016-04-26 21:46:04', '2')")
     session.commit()
     session.execute("update b_user set client_id = 'kingbroker_6b4f9f85012b304979c94" + str(phone) + "\' where mobilephone = \'" + str(phone) + "\'")
     session.commit()
@@ -1795,11 +1795,25 @@ def random_code(i):
             code += str(chr(random.randint(65, 90)))
     return code
 
+#禁用基准照
+def uncheckmugshot(phone):
+    session = db_session()
+    bid = session.execute("select * from b_user WHERE mobilephone = " + str(phone)).first().bid
+    result = session.execute("select * from b_user_certificate where bid = \'" + str(bid) + "\' and cer_type = '901'").fetchall()
+    if(result != None):
+        session.execute("delete from b_user_certificate where bid = \'" + str(bid) + "\' and cer_type = '901'")
+        session.commit()
+    session.execute("insert into b_user_certificate values(NULL, '" + str(bid) + "', '1', '2016-04-27 12:00:51', '2016-04-27 12:00:51', '901', 'a19bdd967145ce8a7b90dbd1d358d292', NULL)")
+    session.commit()
+    session.close()
 
-
-
-
-
+#禁用身份证过期提醒
+def uncheckdailymsg_id(phone):
+    session = db_session()
+    bid = session.execute("select * from b_user WHERE mobilephone = " + str(phone)).first().bid
+    session.execute("update b_message set notice = '0' and is_bapp_sync = '1' where b_userid = \'" + str(bid) + "\' and type = '3'")
+    session.commit()
+    session.close()
 
 
 
@@ -1815,10 +1829,10 @@ if __name__ == '__main__':
     # insert_buser(15210262172)
     # insert_buser(15210262173)
     #删除Bapp经纪人
-    del_buser(15210262168)
+    # del_buser(18001284533)
     #修改培训时间
-    # train_time_start(15313717521)
-    # train_time_end(15313717521)
+    # train_time_start(18610640885)
+    # train_time_end(18610640885)
     #构造KPI数据
     # KPI(18001284533)
     #构造业绩数据
@@ -1853,7 +1867,7 @@ if __name__ == '__main__':
     #删除推荐关系
     # del_share_relation(15501253283)
     #构造可提现金额
-    # cash_count(13312345671)
+    # cash_count(13212345671)
     #删除客户
     # del_customer(18001284500)
     #构造推荐列表
@@ -1879,6 +1893,11 @@ if __name__ == '__main__':
     # print get_current_trade_commission(15210262170)
     #获取本月推荐奖数据
     # print get_current_recommand_info(15210262171)
+    #禁用基准大头照
+    # uncheckmugshot(15210262168)
+    #禁用身份证过期提醒
+    # uncheckdailymsg_id(15210262168)
+
 
     # uploadid_status(15210262168)
     # approve_id(15210262168)
@@ -1915,4 +1934,4 @@ if __name__ == '__main__':
     # print get_contract_time(15210262168)
     # print cash_count(15210262168)
     # share_relation_status(18611358845)
-    print invite_code(12300000000, 15210262166, 1)
+    # print invite_code(12300000000, 15210262166, 1)

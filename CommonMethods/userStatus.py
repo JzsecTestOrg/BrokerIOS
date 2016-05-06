@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'xuwen'
 import dataBase
-from Elements import welcomeElements
+from Elements import welcomeElements, tabElements
 import generateLog, globalData, Data
 
 def isRegisterSuccess(phone):
@@ -14,10 +14,10 @@ def isRegisterSuccess(phone):
         return True
 
 
-def isLoginSuccess(self, phone):
+def isLoginSuccess(self):
     try:
-        el = welcomeElements.welcomePage(self)
-        if(el == None):
+        el = tabElements.mineTab(self)
+        if(el != None):
             globalData.LOG += generateLog.format_log("已登录")
             return True
         else:

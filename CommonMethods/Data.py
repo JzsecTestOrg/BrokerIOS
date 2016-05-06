@@ -75,7 +75,7 @@ def setExecutionresult(module, i, result):
 
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
     # print Data()
     # print sys.path
     # print os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -84,5 +84,6 @@ def setExecutionresult(module, i, result):
     # print getXpath('welcome', 'versionUpdate_cancel', 1)
     # globalData.MODULE = 'register'
     # print unicode("输入昵称: ", 'utf-8') + getValue('register', 'nicknameText', 1)
+    print getTestdata('login', 20, 9)
 
 

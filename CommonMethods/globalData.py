@@ -71,6 +71,12 @@ BOX = (130, 900, 1150, 1500)
 #截图对比结果尺寸大小
 SIZE = (2484, 2208)
 
+#Redis授权
+REDIS = "redis-cli -a CRM_jzzq_Redis "
+
+#SSH
+SSH = "ssh -o StrictHostKeyChecking=no root@10.10.13.39 "
+
 
 
 

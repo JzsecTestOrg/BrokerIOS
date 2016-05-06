@@ -33,7 +33,7 @@ def recommendTab(self):
 
 def mineTab(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('tab', 'mine', 'mineTab', 1))))
+        el = WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('tab', 'mine', 'mineTab', 1))))
         return el
     except:
         globalData.LOG += generateLog.format_log("控件mineTab未找到\n" + traceback.format_exc())
