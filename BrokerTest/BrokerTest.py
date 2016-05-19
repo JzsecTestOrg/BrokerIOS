@@ -2,7 +2,7 @@
 __author__ = 'xuwen'
 
 import unittest, traceback
-from TestCases import welcome, register, login, logout
+from TestCases import welcome, register, login, logout, forgetpassword
 from CommonMethods import generateLog, globalData, checkMail, Data, driverInit, driverQuit, dataBase, generateReport, screenShot
 
 
@@ -49,7 +49,7 @@ class Login(unittest.TestCase):
         welcome.welcome(self, 'login')
         globalData.MODULE = 'login'
         try:
-            for i in range(20, Data.getCasenumber('login') + 1):
+            for i in range(6, Data.getCasenumber('login') + 1):
                 globalData.LOG += generateLog.format_log('*******现在开始执行模块【login】的第【' + str(i) + '】条用例*******')
                 login.login(self, i)
             generateLog.generate_log()
@@ -83,13 +83,40 @@ class Logout(unittest.TestCase):
             generateLog.generate_log()
             globalData.LOG = ''
 
+class Forgetpassword(unittest.TestCase):
+    def setUp(self):
+        globalData.MODULE = 'init'
+        driverInit.deviceSetup(self)
+
+
+    def tearDown(self):
+        driverQuit.driverQuit(self)
+
+
+    def test_logout(self):
+        module_init('forgetpassword')
+        globalData.MODULE = 'welcome'
+        welcome.welcome(self, 'login')
+        globalData.MODULE = 'forgetpassword'
+        try:
+            for i in range(1, Data.getCasenumber('forgetpassword') + 1):
+                globalData.LOG += generateLog.format_log('*******现在开始执行模块【forgetpassword】的第【' + str(i) + '】条用例*******')
+                forgetpassword.forgetpassword(self, i)
+            generateLog.generate_log()
+            globalData.LOG = ''
+        except:
+            globalData.LOG += generateLog.format_log(traceback.format_exc())
+            generateLog.generate_log()
+            globalData.LOG = ''
+
 
 
 def suite():
     RegisterTestSuite = unittest.makeSuite(Register, 'test')
     LoginTestSuite = unittest.makeSuite(Login, 'test')
     LogoutTestSuite = unittest.makeSuite(Logout, 'test')
-    return RegisterTestSuite, LoginTestSuite, LogoutTestSuite
+    ForgetpasswordTestSuite = unittest.makeSuite(Forgetpassword, 'test')
+    return RegisterTestSuite, LoginTestSuite, LogoutTestSuite, ForgetpasswordTestSuite
 
 def module_init(module):
     result = []
@@ -113,7 +140,7 @@ if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     #注册
     try:
-        runner.run(suite()[2])
+        runner.run(suite()[3])
         # screenShot.compareScreenshot()
         # screenShot.mark_result()
         generateReport.generate_report()

@@ -58,12 +58,12 @@ def eyeopenButton(self):
         globalData.LOG += generateLog.format_log("控件eyeopenButton未找到\n" + traceback.format_exc())
 
 
-def forgetpawLink(self):
+def forgetpswLink(self):
     try:
-        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.ID, Data.getXpath('login', 'login', 'forgetpawLink', 1))))
+        el = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH, Data.getXpath('login', 'login', 'forgetpswLink', 1))))
         return el
     except:
-        globalData.LOG += generateLog.format_log("控件forgetpawLink未找到\n" + traceback.format_exc())
+        globalData.LOG += generateLog.format_log("控件forgetpswLink未找到\n" + traceback.format_exc())
     
 
 def loginButton(self):
